@@ -2,7 +2,7 @@
 
 > vuex
 
-## Build Setup
+## 启动以及打包
 
 ``` bash
 # install dependencies
