@@ -1,6 +1,5 @@
 # vuex
 
-<<<<<<< HEAD
 > vuex
 
 ## Build Setup
@@ -19,41 +18,261 @@ npm run build
 npm run build --report
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
-=======
-#### 介绍
-vuex的使用
 
-#### 软件架构
-软件架构说明
+# 最简单的store
+
+**安装 Vuex 之后，让我们来创建一个 store。创建过程直截了当——仅需要提供一个初始 state 对象和一些 mutation：**
+
+> store.js
+
+```js
+
+import Vue from 'vue'
+import Vuex from 'vuex'
+
+Vue.use(Vuex)
+
+export default new Vuex.Store({
+    state: {
+        num: 0,
+        name: '刘旭',
+        age: 22
+    },
+    mutations: {
+        numAdd(state) {
+            state.num += 2
+        },
+        setNum(state, value) {
+            state.num = value
+        }
+    },
+    actions: {
+
+    },
+    modules: {
+
+    }
+})
+
+```
+> home.vue
+
+```js
+<template>
+    <div class="box">
+        <h1>这是home页</h1>
+        <h3>这是一个计数器：{{count}}</h3>
+        <button @click="countAdd">加</button>
+        <button @click="countJian">减</button>
+
+        <!-- vuex方式 -->
+
+        <h2>vuex方式</h2>
+        <h3>这是一个计数器：{{$store.state.num}}</h3>
+        <button @click="addNum">加</button>
+    </div>
+</template>
+
+<script>
+export default {
+    name: 'home',
+    data() {
+        return {
+            count: 0
+        }
+    },
+    methods: {
+        countAdd:function(){
+            this.count++
+        },
+
+        countJian:function(){
+            if(this.count <= 0){
+                return false
+            }else{
+                this.count--
+            }
+        },
+        addNum:function(){
+            this.$store.commit('numAdd')
+        }
+    },
+}
+</script>
+
+```
+
+**现在，你可以通过 $store.state.num 来获取状态对象中的num属性，以及通过 $store.commit 方法触发状态变更：**
+
+```js
+store.commit('numAdd')
+
+console.log(store.state.num) // -> 2
+```
+---
+
+### ==以下数据均来自上面的store.js==
+
+## state
+
+将用到的全局state对象放到组件的 computed （计算属性）中，v-model的内容将其分开来写（set和get）
+
+```js
+<template>
+    <div class="state">
+        <ul>
+            <li>姓名：{{name}}</li>
+            <li>年龄：{{age}}</li>
+            <li>数字：{{num}}</li>
+        </ul>
+        <input type="text" v-model="num">
+    </div>
+</template>
+
+<script>
+export default {
+    name:'state',
+    computed: {
+        name:function(){
+            return this.$store.state.name
+        },
+        age:function(){
+            return this.$store.state.age
+        },
+        num:{
+            get:function(){
+                return this.$store.state.num
+            },
+            set:function(val){
+                this.$store.commit('setNum',val)
+            }
+        }
+    },
+}
+</script>
+```
+
+## mapState (辅助函数)
+
+首先要导入我们的 store
+
+```js
+import { mapState } from 'vuex'
+```
+
+**1. 第一种映射方式（数组）**
+
+```js
+<template>
+    <div class="state">
+        <ul>
+            <li>姓名：{{name}}</li>
+            <li>年龄：{{age}}</li>
+            <li>数字：{{num}}</li>
+        </ul>
+        <input type="text" v-model="num">
+        <input type="text" :value='num' @input="changeNum">
+    </div>
+</template>
+
+<script>
+export default {
+    name:'state',
+    computed: mapState(['age','name','num']),
+    methods: {
+        changeNum:function(e){
+            return this.$store.commit('setNum',e.target.value)
+        }
+    },
+}
+</script>
+
+```
+
+**2. 第二种映射方式（对象）**
+
+```js
+<template>
+    <div class="state">
+        <ul>
+            <li>姓名：{{name}}</li>
+            <li>年龄：{{age}}</li>
+            <li>数字：{{num}}</li>
+            <li>greenMsg: {{greenMsg}}</li>
+        </ul>
+    </div>
+</template>
+
+<script>
+import { mapState } from 'vuex'
+
+export default {
+    name:'state',
+    data() {
+        return {
+            green: '真帅,哈哈哈'
+        }
+    },
+    
+    // 第二种映射方式
+    computed: mapState({
+        name: 'name',
+        // age: 'age'
+        age: (state) => state.age, // 等同于上面 ⬆️
+        num: "num",
+        greenMsg: function(state) {
+            return state.name + this.green
+        }
+    })
+}
+</script>
+```
+
+**3. 对象展开运算符**
+
+```js
+
+<template>
+    <div class="state">
+        <ul>
+            <li>姓名：{{name}}</li>
+            <li>年龄：{{age}}</li>
+            <li>数字：{{num}}</li>
+            <li>greenMsg: {{greenMsg}}</li>
+        </ul>
+    </div>
+</template>
+
+<script>
+import { mapState } from 'vuex'
+
+export default {
+    name:'state',
+    data() {
+        return {
+            green: '真帅,哈哈哈'
+        }
+    },
+    
+   computed: {
+        reverse: function(){
+            return this.green.split('').reverse().join('')
+        },
+        ...mapState({
+            name: 'name',
+            age: (state) => state.age,
+            num: "num",
+            greenMsg: function(state) {
+                return state.name + this.green
+            }
+        })
+    },
+}
+</script>
+
+```
+
+*mapState 可以传数组，或者是对象，字符串...等，上面我们传的是数组*
 
 
-#### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
-
-#### 码云特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5.  码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
->>>>>>> 669e1faf0999c5fe88dce5ce45cd0a8d51d1832f
+**点击[码云地址](https://gitee.com/L1999G0318X/vuex.git)查看完整代码**
