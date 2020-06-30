@@ -12,20 +12,20 @@
 import { mapState, mapGetters } from 'vuex'
 export default {
     name: 'getter',
-    // computed: {
-    //     gettersMsg:function(){
-    //         return this.$store.getters.getterMsg
-    //     },
-    //     ...mapState(['name','age']),
+     computed: {
+         gettersMsg:function(){
+             return this.$store.getters.getterMsg
+         },
+         ...mapState(['name','age']),
         
-    //     // 辅助函数mapGetters，可以数组形式，可以对象形式
-    //     ...mapGetters(['mapGetters']),
-    //     ...mapGetters({
-    //         liuxu: 'mapGetters',
-    //     })
-    // },
+         // 辅助函数mapGetters，可以数组形式，可以对象形式
+         ...mapGetters(['mapGetters']),
+         ...mapGetters({
+             liuxu: 'mapGetters',
+         })
+     },
     
-    computed: mapGetters(['mapGetters']),
+    // computed: mapGetters(['mapGetters']),
    
 }
 </script>
