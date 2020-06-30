@@ -272,7 +272,7 @@ export default {
 
 ```
 
-*mapState 可以传数组，或者是对象，字符串...等，上面我们传的是数组*
+* mapState 可以传数组，或者是对象，字符串...等，上面我们传的是数组 *
 
 
 **点击[码云地址](https://gitee.com/L1999G0318X/vuex.git)查看完整代码**
