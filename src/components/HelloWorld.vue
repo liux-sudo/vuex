@@ -4,6 +4,7 @@
       <router-link to="/home" tag="li">home</router-link>
       <router-link to="/state" tag="li">state</router-link>
       <router-link to="/getter" tag="li">getter</router-link>
+      <router-link to="/actions" tag="li">action</router-link>
     </ul>
   </div>
 </template>

@@ -4,6 +4,7 @@ import index from '@/components/HelloWorld'
 import home from '@/view/home'
 import state from '@/view/state'
 import getter from '@/view/getter'
+import action from '@/view/actions'
 
 Vue.use(Router)
 
@@ -24,5 +25,9 @@ export default new Router({
         path: '/getter',
         name: 'getter',
         component: getter
+    }, {
+        path: '/actions',
+        name: 'actions',
+        component: action
     }]
 })

@@ -6,7 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         num: 0,
-        name: '刘旭',
+        name: '刘国旭',
         age: 22,
         getters: '用使的retteg是这',
         mapGetters: 'mapGetters'
