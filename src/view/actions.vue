@@ -130,4 +130,8 @@ export default {
         left: 0;
         bottom: 0;
     }
+    video{
+        background: #000;
+        outline: none;
+    }
 </style>
