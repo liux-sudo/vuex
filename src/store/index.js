@@ -11,6 +11,8 @@ export default new Vuex.Store({
         getters: '用使的retteg是这',
         mapGetters: 'mapGetters',
         duanzi: null,
+        duanzitext: null,
+        duanziImage: null,
     },
 
     // 就是公共的计算属性
@@ -32,17 +34,45 @@ export default new Vuex.Store({
         },
         setDuanzi(state, value) {
             state.duanzi = value;
+        },
+        setDuanziText(state, value) {
+            state.duanzitext = value;
+        },
+        setDuanziImg(state, value) {
+            state.duanziImage = value
         }
     },
 
     // 异步方法
     actions: {
-        setDz: function(context) {
-            let httpUrl = 'https://api.apiopen.top/getJoke?page=1&count=20&type=video'
+        setDz: function(context, options) {
+            let httpUrl = `https://api.apiopen.top/getJoke?page=${options.pageNo}&count=${options.pageSize}&type=video`
             fetch(httpUrl).then(res => res.json()).then(res => {
                 let data = res.result
                 if (res.code === 200) {
                     context.commit('setDuanzi', data)
+                } else {
+                    console.log(message)
+                }
+            })
+        },
+        setDzTxt: function(context, options) {
+            let httpUrl = `https://api.apiopen.top/getJoke?page=${options.pageNo}&count=${options.pageSize}&type=text`
+            fetch(httpUrl).then(res => res.json()).then(res => {
+                let data = res.result
+                if (res.code === 200) {
+                    context.commit('setDuanziText', data)
+                } else {
+                    console.log(message)
+                }
+            })
+        },
+        setDzImage: function(context, options) {
+            let httpUrl = `https://api.apiopen.top/getJoke?page=${options.pageNo}&count=${options.pageSize}&type=image`
+            fetch(httpUrl).then(res => res.json()).then(res => {
+                let data = res.result
+                if (res.code === 200) {
+                    context.commit('setDuanziImg', data)
                 } else {
                     console.log(message)
                 }
