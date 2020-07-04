@@ -6,26 +6,26 @@
             <el-button round @click="text">文字</el-button>
             <el-button round @click="image">图片</el-button>
         </el-row>
-        <ul v-if="is.isVideo">
+        <ol v-if="is.isVideo">
             <li v-for="(item,index) in duanzi" :key="index">
                 <h2>{{item.text}}</h2>
                 <video width="500px" height="300px" :src="item.video" :poster="item.header" controls></video>
             </li>
             <pagination :action="setDz" />
-        </ul>
-        <ul v-else-if="is.isText">
+        </ol>
+        <ol v-else-if="is.isText">
             <li v-for="(item,index) in duanziText" :key="index">
                 <p>{{item.text}}</p>
             </li>
             <pagination :action="setDzTxt" />
-        </ul>
-        <ul v-else-if="is.isImg">
+        </ol>
+        <ol v-else-if="is.isImg">
             <li v-for="(item,index) in duanziImg" :key="index">
                 <p>{{item.text}}</p>
                 <img class="img" :src="item.images" :alt="item.top_comments_content">
             </li>
             <pagination :action="setDzImage" />
-        </ul>
+        </ol>
         
     </div>
 </template>
@@ -55,53 +55,61 @@ export default {
     //     console.log(res.msg)
     // },
     mounted() {
-        this.setDz()
-        this.setDzTxt()
-        this.setDzImage()
+        this.setDz(this.pageNo,this.pageSize)
+        this.setDzTxt(this.pageNo,this.pageSize)
+        this.setDzImage(this.pageNo,this.pageSize)
     },
     methods: {
        video: function(){
            this.setDz(this.pageNo,this.pageSize)
-           this.is.isVideo = true;
-           this.is.isText = false
-           this.is.isImg = false
+           this.isVisible('video')
        },
        text:function(){
            this.setDzTxt(this.pageNo,this.pageSize)
-           this.is.isVideo = false;
-           this.is.isText = true
-           this.is.isImg = false
+           this.isVisible('text')
        },
        image:function(){
            this.setDzImage(this.pageNo,this.pageSize)
-           this.is.isVideo = false;
-           this.is.isText = false
-           this.is.isImg = true
+           this.isVisible('image')
        },
        setDz:function(pageNo = 1,pageSize = this.pageSize){
-            this.pageNo = pageNo
-            this.pageSize = pageSize
-            this.$store.dispatch('setDz',{
-                pageNo: this.pageNo,
-                pageSize: this.pageSize
-           })
+            this.dispatchActions('setDz',pageNo,pageSize)
        },
        setDzTxt:function(pageNo = 1,pageSize = this.pageSize){
-            this.pageNo = pageNo
-            this.pageSize = pageSize
-           this.$store.dispatch('setDzTxt',{
-                pageNo: this.pageNo,
-                pageSize: this.pageSize
-           })
+            this.dispatchActions('setDzTxt',pageNo,pageSize)
        },
        setDzImage:function(pageNo = 1,pageSize = this.pageSize){
+            this.dispatchActions('setDzImage',pageNo,pageSize)
+       },
+       dispatchActions:function(fn_name,pageNo,pageSize){
             this.pageNo = pageNo
             this.pageSize = pageSize
-           this.$store.dispatch('setDzImage',{
+            this.$store.dispatch(fn_name,{
                 pageNo: this.pageNo,
                 pageSize: this.pageSize
            })
        },
+       isVisible:function(type){
+            switch (type){
+                case 'image':
+                    this.is.isVideo = false;
+                    this.is.isText = false;
+                    this.is.isImg = true;
+                    break;
+                case 'text':
+                    this.is.isVideo = false;
+                    this.is.isText = true
+                    this.is.isImg = false
+                    break;
+                case 'video':
+                    this.is.isVideo = true;
+                    this.is.isText = false
+                    this.is.isImg = false
+                    break;
+                default: break;
+            }
+            
+       }
     },
     computed: {
         ...mapState({
@@ -133,5 +141,8 @@ export default {
     video{
         background: #000;
         outline: none;
+    }
+    .el-pager{
+        height: 35px;
     }
 </style>
