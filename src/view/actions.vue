@@ -73,21 +73,28 @@ export default {
            this.isVisible('image')
        },
        setDz:function(pageNo = 1,pageSize = this.pageSize){
-            this.dispatchActions('setDz',pageNo,pageSize)
+           let httpUrl = `https://api.apiopen.top/getJoke?page=${pageNo}&count=${pageSize}&type=video`
+            this.dispatchActions('setDz',pageNo,pageSize,httpUrl)
        },
        setDzTxt:function(pageNo = 1,pageSize = this.pageSize){
-            this.dispatchActions('setDzTxt',pageNo,pageSize)
+           let httpUrl = `https://api.apiopen.top/getJoke?page=${pageNo}&count=${pageSize}&type=text`
+            this.dispatchActions('setDzTxt',pageNo,pageSize,httpUrl)
        },
        setDzImage:function(pageNo = 1,pageSize = this.pageSize){
-            this.dispatchActions('setDzImage',pageNo,pageSize)
+            let httpUrl = `https://api.apiopen.top/getJoke?page=${pageNo}&count=${pageSize}&type=image`
+            this.dispatchActions('setDzImage',pageNo,pageSize,httpUrl)
        },
-       dispatchActions:function(fn_name,pageNo,pageSize){
+       dispatchActions:function(fn_name,pageNo,pageSize,httpUrl){
             this.pageNo = pageNo
             this.pageSize = pageSize
-            this.$store.dispatch(fn_name,{
-                pageNo: this.pageNo,
-                pageSize: this.pageSize
-           })
+            fetch(httpUrl).then(res => res.json()).then(res => {
+                let data = res.result
+                if (res.code === 200) {
+                    this.$store.dispatch(fn_name,data)
+                } else {
+                    console.log(message)
+                }
+            })
        },
        isVisible:function(type){
             switch (type){

@@ -45,38 +45,14 @@ export default new Vuex.Store({
 
     // 异步方法
     actions: {
-        setDz: function(context, options) {
-            let httpUrl = `https://api.apiopen.top/getJoke?page=${options.pageNo}&count=${options.pageSize}&type=video`
-            fetch(httpUrl).then(res => res.json()).then(res => {
-                let data = res.result
-                if (res.code === 200) {
-                    context.commit('setDuanzi', data)
-                } else {
-                    console.log(message)
-                }
-            })
+        setDz: function({ commit }, data) {
+            commit('setDuanzi', data)
         },
-        setDzTxt: function(context, options) {
-            let httpUrl = `https://api.apiopen.top/getJoke?page=${options.pageNo}&count=${options.pageSize}&type=text`
-            fetch(httpUrl).then(res => res.json()).then(res => {
-                let data = res.result
-                if (res.code === 200) {
-                    context.commit('setDuanziText', data)
-                } else {
-                    console.log(message)
-                }
-            })
+        setDzTxt: function({ commit }, data) {
+            commit('setDuanziText', data)
         },
-        setDzImage: function(context, options) {
-            let httpUrl = `https://api.apiopen.top/getJoke?page=${options.pageNo}&count=${options.pageSize}&type=image`
-            fetch(httpUrl).then(res => res.json()).then(res => {
-                let data = res.result
-                if (res.code === 200) {
-                    context.commit('setDuanziImg', data)
-                } else {
-                    console.log(message)
-                }
-            })
+        setDzImage: function({ commit }, data) {
+            commit('setDuanziImg', data)
         }
     },
     modules: {
