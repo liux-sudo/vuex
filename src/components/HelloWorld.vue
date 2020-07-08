@@ -5,6 +5,7 @@
       <router-link to="/state" tag="li">state</router-link>
       <router-link to="/getter" tag="li">getter</router-link>
       <router-link to="/actions" tag="li">action</router-link>
+      <router-link to="/modules" tag="li">modules</router-link>
     </ul>
   </div>
 </template>

@@ -5,6 +5,7 @@ import home from '@/view/home'
 import state from '@/view/state'
 import getter from '@/view/getter'
 import action from '@/view/actions'
+import modules from '@/view/modules'
 
 Vue.use(Router)
 
@@ -29,5 +30,9 @@ export default new Router({
         path: '/actions',
         name: 'actions',
         component: action
+    }, {
+        path: '/modules',
+        name: 'modules',
+        component: modules
     }]
 })

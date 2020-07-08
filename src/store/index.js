@@ -4,6 +4,7 @@ import actions from './actions'
 import mutations from './mutations'
 import getters from './getters'
 import state from './state'
+import buyCard from './buyCard'
 
 Vue.use(Vuex)
 
@@ -16,6 +17,6 @@ export default new Vuex.Store({
     // 异步方法
     actions,
     modules: {
-
+        buyCard
     }
 })
