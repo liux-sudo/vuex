@@ -10,7 +10,15 @@ module.exports = {
         // Paths
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
-        proxyTable: {},
+        proxyTable: {
+            "/api": {
+                "target": "https://api.apiopen.top",
+                "changeOrigin": true,
+                "pathRewrite": {
+                    "^/hd": ""
+                }
+            }
+        },
 
         // Various Dev Server settings
         host: 'localhost', // can be overwritten by process.env.HOST

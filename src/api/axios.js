@@ -5,7 +5,8 @@ let loadingInstance = null // 加载全局的loading
 
 const instance = axios.create({ //创建axios实例，在这里可以设置请求的默认配置
     timeout: 60000, // 设置超时时间60s
-    baseURL: process.env.NODE_ENV === 'production' ? '' : 'https://api.apiopen.top' //根据自己配置的反向代理去设置不同环境的baeUrl
+    // baseURL: process.env.NODE_ENV === 'production' ? '' : '/api' //根据自己配置的反向代理去设置不同环境的baeUrl
+    baseURL: 'https://api.apiopen.top'
 })
 
 // 文档中的统一设置post请求头。
