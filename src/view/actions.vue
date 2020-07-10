@@ -31,10 +31,9 @@
 </template>
 
 <script>
-import { getlbt } from '@/api/data';
+import { getDzData } from '@/api/data';
 import { mapState,mapActions } from 'vuex';
 import pagination from '@/components/pagination'
-
 export default {
     name: 'action',
     data() {
@@ -49,11 +48,6 @@ export default {
         }
     },
     components:{pagination},
-    // 测试axios封装
-    // async mounted() {
-    //     let res = await getlbt()
-    //     console.log(res.msg)
-    // },
     mounted() {
         this.setDz(this.pageNo,this.pageSize)
         this.setDzTxt(this.pageNo,this.pageSize)
@@ -72,30 +66,43 @@ export default {
            this.setDzImage(this.pageNo,this.pageSize)
            this.isVisible('image')
        },
-       setDz:function(pageNo = 1,pageSize = this.pageSize){
-           let httpUrl = `https://api.apiopen.top/getJoke?page=${pageNo}&count=${pageSize}&type=video`
-            this.dispatchActions('setDz',pageNo,pageSize,httpUrl)
-       },
-       setDzTxt:function(pageNo = 1,pageSize = this.pageSize){
-           let httpUrl = `https://api.apiopen.top/getJoke?page=${pageNo}&count=${pageSize}&type=text`
-            this.dispatchActions('setDzTxt',pageNo,pageSize,httpUrl)
-       },
-       setDzImage:function(pageNo = 1,pageSize = this.pageSize){
-            let httpUrl = `https://api.apiopen.top/getJoke?page=${pageNo}&count=${pageSize}&type=image`
-            this.dispatchActions('setDzImage',pageNo,pageSize,httpUrl)
-       },
-       dispatchActions:function(fn_name,pageNo,pageSize,httpUrl){
-            this.pageNo = pageNo
-            this.pageSize = pageSize
-            fetch(httpUrl).then(res => res.json()).then(res => {
+       setDz:function(pageNo = 1,pageSize = 10){
+            let params = {
+                pageNo,
+                count:pageSize,
+                type: 'video'
+            }
+            getDzData(params).then(res => {
                 let data = res.result
-                if (res.code === 200) {
-                    this.$store.dispatch(fn_name,data)
-                } else {
-                    console.log(message)
-                }
+                this.$store.dispatch('setDz',data)
             })
        },
+       setDzTxt:function(pageNo = 1,pageSize = 10){
+            let params = {
+                pageNo,
+                count:pageSize,
+                type: 'text'
+            }
+            getDzData(params).then(res => {
+                let data = res.result
+                this.$store.dispatch('setDzTxt',data)
+            })
+       },
+       setDzImage:function(pageNo = 1,pageSize = 10){
+            let params = {
+                pageNo,
+                count:pageSize,
+                type: 'image'
+            }
+            getDzData(params).then(res => {
+                let data = res.result
+                this.$store.dispatch('setDzImage',data)
+            })
+       },
+    //    dispatchActions:function(fn_name,params){
+    //         this.pageNo = params.pageNo
+    //         this.pageSize = params.pageSize
+    //    },
        isVisible:function(type){
             switch (type){
                 case 'image':
