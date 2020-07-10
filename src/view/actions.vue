@@ -41,7 +41,7 @@ export default {
             is:{
                 isVideo: false,
                 isText: false,
-                isImg: false,
+                isImg: true,
             },
             pageNo: 1,
             pageSize: 10,
