@@ -107,15 +107,15 @@ export const post = (url, data, config = {}) => {
 }
 
 /* 或者写成下面这样： Promise.resolve() 和 Promise.reject()返回的是promise对象，二者都是语法糖  */
-// export const post = (url, data, config = {}) => {
-//     return instance({
-//         method: 'post',
-//         url,
-//         data,
-//         ...config
-//     }).then(response => {
-//         return Promise.resolve(response)
-//     }).catch(error => {
-//         return Promise.reject(error)
-//     })
-// }
+/* export const post = (url, data, config = {}) => {
+    return instance({
+        method: 'post',
+        url,
+        data,
+        ...config
+    }).then(response => {
+        return Promise.resolve(response)
+    }).catch(error => {
+        return Promise.reject(error)
+    })
+} */
